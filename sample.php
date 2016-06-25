@@ -11,13 +11,15 @@ if (strlen($_GET['Authority']) == 36 && $_GET['Status'] == 'OK') {
     $payerCell = $_SERVER['HTTP_X_PAY_MOBILE'];
     if (!empty($amount) && !empty($payerCell)) {
         // URL also Can be https://de.zarinpal.com/pg/services/WebGate/wsdl
-        $client = new SoapClient('https://ir.zarinpal.com/pg/services/WebGate/wsdl', ['encoding' => 'UTF-8']);
-
-        $result = $client->PaymentVerification([
-            'MerchantID'    => $merchantID,
-            'Authority'     => $_GET['Authority'],
-            'Amount'        => $amount,
-        ]);
+       $client = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl', array('encoding' => 'UTF-8')); 
+		
+		$result = $client->PaymentVerification(
+						  	array(
+									'MerchantID'	 => $MerchantID,
+									'Authority' 	 => $Authority,
+									'Amount'	 => $Amount
+								)
+		);
 
         if ($result->Status == 100) {
             echo 'Transation success. RefID:'.$result->RefID;
@@ -26,3 +28,5 @@ if (strlen($_GET['Authority']) == 36 && $_GET['Status'] == 'OK') {
         }
     }
 }
+
+?>
